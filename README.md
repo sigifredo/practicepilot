@@ -32,11 +32,9 @@ from practicepilot import <algo>
 
 ## Colab: ejemplo mínimo
 
-```bash
-!pip install -q git+https://github.com/sigifredo/practicepilot.git
-```
-
 ```python
+!pip install -q git+https://github.com/sigifredo/practicepilot.git
+
 import practicepilot
 print('practicepilot importó correctamente')
 ```
