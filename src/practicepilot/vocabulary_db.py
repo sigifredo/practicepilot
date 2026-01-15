@@ -1,5 +1,3 @@
-from .environment import load_environment_variables
-
 import enum
 import supabase
 
@@ -16,13 +14,11 @@ class Level(str, enum.Enum):
 
 
 class VocabularyDB:
-    def __init__(self):
-        env_vars = load_environment_variables('.env')
-
-        if not env_vars.get('DB_API_KEY') or not env_vars.get('DB_URL'):
+    def __init__(self, config: dict[str, str]):
+        if not config.get('DB_API_KEY') or not config.get('DB_URL'):
             raise RuntimeError('No se han identificado las variables de acceso a la base de datos (DB_URL, DB_API_KEY).')
 
-        self.db_client = supabase.create_client(env_vars['DB_URL'], env_vars['DB_API_KEY'])
+        self.db_client = supabase.create_client(config['DB_URL'], config['DB_API_KEY'])
 
     def fetch_all_rows(self, page_size: int = 1000):
         all_rows = []
