@@ -1,5 +1,7 @@
 import enum
 import supabase
+import typing
+
 
 TABLE_NAME = 'vocabulary'
 
@@ -19,6 +21,32 @@ class VocabularyDB:
             raise RuntimeError('No se han identificado las variables de acceso a la base de datos (DB_URL, DB_API_KEY).')
 
         self.db_client = supabase.create_client(config['DB_URL'], config['DB_API_KEY'])
+
+    def get_terms(self):
+        terms: list[str] = []
+        rows: list[dict[str, typing.Any]] = self.fetch_all_rows()
+
+        for row in rows:
+            term = row.get('term')
+
+            if term is None:
+                continue
+
+            term = str(term).strip()
+
+            if term:
+                terms.append(term)
+
+        # dedupe preserving order
+        seen = set()
+        out = []
+
+        for t in terms:
+            if t not in seen:
+                seen.add(t)
+                out.append(t)
+
+        return out
 
     def fetch_all_rows(self, page_size: int = 1000):
         all_rows = []
