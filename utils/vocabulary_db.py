@@ -16,7 +16,7 @@ class Level(str, enum.Enum):
     C2 = 'C2'
 
 
-def pick_terms(vocab_terms: list[str], k: int) -> list[str]:
+def pick_terms(vocab_terms: list[typing.Any], k: int) -> list[str]:
     if not vocab_terms:
         return []
 
