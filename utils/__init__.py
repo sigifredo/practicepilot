@@ -1,4 +1,3 @@
-__all__ = ['hello']
 __version__ = '0.1.0'
 
 from .environment import load_environment_variables
