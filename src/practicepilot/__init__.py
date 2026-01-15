@@ -11,3 +11,4 @@ from .qwen import Qwen
 
 from .vocabulary_db import Level
 from .vocabulary_db import VocabularyDB
+from .vocabulary_db import pick_terms
