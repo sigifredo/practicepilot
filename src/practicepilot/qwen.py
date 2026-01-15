@@ -16,12 +16,15 @@ class Qwen:
         self.model_name = MODEL_NAME
         self.seed = seed  # None => semilla variable
 
-        quant_config = transformers.BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type='nf4',
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_compute_dtype=torch.float16,
-        )
+        try:
+            quant_config = transformers.BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type='nf4',
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_compute_dtype=torch.float16,
+            )
+        except Exception:
+            quant_config = None
 
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(
             self.model_name,
