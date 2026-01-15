@@ -1,4 +1,5 @@
 import enum
+import random
 import supabase
 import typing
 
@@ -13,6 +14,14 @@ class Level(str, enum.Enum):
     B2 = 'B2'
     C1 = 'C1'
     C2 = 'C2'
+
+
+def pick_terms(vocab_terms: list[str], k: int) -> list[str]:
+    if not vocab_terms:
+        return []
+
+    k = max(1, min(k, len(vocab_terms)))
+    return random.sample(vocab_terms, k)
 
 
 class VocabularyDB:
