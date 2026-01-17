@@ -1,4 +1,5 @@
 import enum
+import math
 import random
 import supabase
 import typing
@@ -16,12 +17,52 @@ class Level(str, enum.Enum):
     C2 = 'C2'
 
 
-def pick_terms(vocab_terms: list[typing.Any], k: int) -> list[str]:
-    if not vocab_terms:
+def pick_terms(vocab_terms: list[dict[str, typing.Any]], k: int) -> list[dict[str, typing.Any]]:
+    '''
+    Weighted random sample without replacement.
+    Lower review_count => higher probability.
+
+    Uses Efraimidis-Spirakis (A-ExpJ) sampling:
+      key_i = -log(U) / w_i
+    pick k items with smallest keys.
+    '''
+
+    if not vocab_terms or k <= 0:
         return []
 
-    k = max(1, min(k, len(vocab_terms)))
-    return random.sample(vocab_terms, k)
+    k = min(k, len(vocab_terms))
+
+    def weight(item: dict[str, typing.Any]) -> float:
+        rc = item.get('review_count', 0)
+
+        try:
+            rc = int(rc)
+        except (TypeError, ValueError):
+            rc = 0
+
+        rc = max(rc, 0)
+
+        return 1.0 / (rc + 1)
+
+    scored = []
+
+    for item in vocab_terms:
+        w = weight(item)
+
+        if w <= 0:
+            continue
+
+        u = random.random()
+        key = -math.log(u) / w
+        scored.append((key, item))
+
+    if not scored:
+        return []
+
+    scored.sort(key=lambda x: x[0])
+    picked = [item for _, item in scored[:k]]
+
+    return picked
 
 
 class VocabularyDB:
