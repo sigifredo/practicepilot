@@ -17,7 +17,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_read = sub.add_parser('read', help='Leer registros de la tabla.')
     p_read.add_argument('--page-size', type=int, default=1000, help='Tamaño de página para paginación REST.')
     p_read.add_argument('--limit', type=int, default=-1, help='Cuántas filas imprimir como muestra (0 imprime ninguna).')
-    p_read.add_argument('-f', '--format', required=False, choices=['json', 'txt'], default='txt', help='Formats: json, txt')
+    p_read.add_argument('-f', '--format', required=False, choices=['json', 'table', 'txt'], default='txt', help='Formats: json, table, txt')
 
     # insert
     p_ins = sub.add_parser('insert', help='Insertar un término en la tabla.')
