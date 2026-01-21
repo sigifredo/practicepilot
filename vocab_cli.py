@@ -3,6 +3,7 @@
 from utils import log
 
 import argparse
+import tabulate
 import utils
 import sys
 
@@ -26,7 +27,7 @@ def build_parser() -> argparse.ArgumentParser:
     # pick
     p_pick = sub.add_parser('pick', help='Seleccionar N términos aleatorios de la tabla.')
     p_pick.add_argument('n', type=int, help='Cantidad de términos a seleccionar.')
-    p_pick.add_argument('-f', '--format', required=False, choices=['json', 'txt'], default='txt', help='Formats: json, txt')
+    p_pick.add_argument('-f', '--format', required=False, choices=['json', 'table', 'txt'], default='txt', help='Formats: json, table, txt')
 
     return parser
 
@@ -56,6 +57,8 @@ if __name__ == '__main__':
 
             for r in rows[:limit]:
                 print(r)
+        elif args.format == 'table':
+            print(f'\n{tabulate.tabulate(rows, headers="keys", tablefmt="github")}\n')
         elif args.format == 'txt':
             print(f'Vocabulario: {", ".join([r["term"] for r in rows])}')
 
