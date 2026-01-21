@@ -45,6 +45,7 @@ if __name__ == '__main__':
 
     if args.command == 'read' or args.command == 'pick':
         rows = db_connection.fetch_all_rows()
+        rows = sorted(rows, key=lambda r: r['id'])
 
         print(f'Tabla: {db_connection.table_name()}')
         print(f'Total filas: {len(rows)}')
